@@ -1,0 +1,106 @@
+groups:
+  - name: walletbot_alerts
+    rules:
+      - alert: PortfolioValueDrop5pct
+        expr: (portfolio_value_usd - portfolio_value_usd offset 1h) / (portfolio_value_usd offset 1h) < -0.05
+        for: 5m
+        labels:
+          severity: critical
+        annotations:
+          summary: "Portfolio dropped >5% in 1h"
+
+      - alert: PortfolioValueDrop10pct
+        expr: (portfolio_value_usd - portfolio_value_usd offset 1h) / (portfolio_value_usd offset 1h) < -0.10
+        for: 2m
+        labels:
+          severity: critical
+        annotations:
+          summary: "Portfolio dropped >10% in 1h"
+
+      - alert: WalletCircuitOpen
+        expr: circuit_breaker_state == 2
+        for: 1m
+        labels:
+          severity: critical
+        annotations:
+          summary: "Circuit breaker OPEN for wallet {{ $labels.wallet_id }}"
+
+      - alert: MLConfidenceLow
+        expr: ml_confidence_score < 0.50
+        for: 15m
+        labels:
+          severity: warning
+        annotations:
+          summary: "ML confidence below 50% for 15m"
+
+      - alert: MLEnsembleWeightDrift
+        expr: max(ensemble_weight_xgb, ensemble_weight_lgbm, ensemble_weight_lstm, ensemble_weight_transformer) > 0.70
+        for: 10m
+        labels:
+          severity: warning
+        annotations:
+          summary: "A single model dominates ensemble (weight >0.70)"
+
+      - alert: RPCLatencyHigh
+        expr: rpc_latency_p99_ms > 2000
+        for: 5m
+        labels:
+          severity: warning
+        annotations:
+          summary: "RPC p99 latency above 2s"
+
+      - alert: RPCAllEndpointsDegraded
+        expr: min(rpc_endpoint_health_score) < 0.5
+        for: 2m
+        labels:
+          severity: critical
+        annotations:
+          summary: "All RPC endpoints degraded"
+
+      - alert: GasPriceSpike
+        expr: gas_price_gwei > 200
+        for: 3m
+        labels:
+          severity: warning
+        annotations:
+          summary: "Gas price above 200 gwei"
+
+      - alert: TxBroadcastFailureRate
+        expr: rate(tx_broadcast_failures_total[5m]) / rate(tx_broadcast_total[5m]) > 0.2
+        for: 3m
+        labels:
+          severity: critical
+        annotations:
+          summary: "TX broadcast failure rate above 20%"
+
+      - alert: ConceptDriftDetected
+        expr: feature_drift_score > 0.15
+        for: 10m
+        labels:
+          severity: warning
+        annotations:
+          summary: "Feature drift score above 0.15"
+
+      - alert: AaveAPYDropped
+        expr: aave_supply_apy_pct < 1.0
+        for: 30m
+        labels:
+          severity: info
+        annotations:
+          summary: "Aave USDC supply APY below 1%"
+
+      - alert: FlashCrashKillSwitch
+        expr: kill_switch_active == 1
+        for: 0m
+        labels:
+          severity: critical
+        annotations:
+          summary: "Flash crash kill switch activated"
+
+      - alert: DrawdownControllerHalt
+        expr: drawdown_controller_state == 1
+        for: 1m
+        labels:
+          severity: critical
+        annotations:
+          summary: "Drawdown controller halted trading"

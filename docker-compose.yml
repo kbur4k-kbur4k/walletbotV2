@@ -1,0 +1,33 @@
+services:
+  wallet_manager:
+    build: .
+    restart: unless-stopped
+    env_file: .env
+    environment:
+      # Redirect all DB files into the persistent /app/data volume
+      PAPER_DB_PATH: /app/data/paper_trades.db
+      ANALYTICS_DB_PATH: /app/data/wallet_analytics.db
+      QUANT_ANALYTICS_DB_PATH: /app/data/quant_analytics.db
+      HISTORICAL_DATA_DB_PATH: /app/data/historical_data.db
+      WF_VALIDATOR_DB_PATH: /app/data/wf_validator.db
+      TRADE_JOURNAL_PATH: /app/data/trade_journal.jsonl
+    volumes:
+      - ./wallets.json:/app/wallets.json:ro
+      - ./logs:/app/logs
+      - walletbot_data:/app/data
+    ports:
+      - "9090:9090"
+    deploy:
+      resources:
+        limits:
+          cpus: '1.0'
+          memory: 2g
+    healthcheck:
+      test: ["CMD", "python", "-c", "import urllib.request; urllib.request.urlopen('http://localhost:9090/health')"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      start_period: 60s
+
+volumes:
+  walletbot_data:

@@ -1,0 +1,12 @@
+[
+  {
+    "wallet_id": "wallet_01",
+    "address": "0x4200000000000000000000000000000000000006",
+    "encrypted_private_key": "ZmFrZV9lbmNyeXB0ZWRfcHJpdmF0ZV9rZXk=",
+    "label": "Main trading wallet",
+    "rpc_url": "https://mainnet.base.org",
+    "chain_id": 8453,
+    "max_gas_price_gwei": 50.0,
+    "enabled": true
+  }
+]

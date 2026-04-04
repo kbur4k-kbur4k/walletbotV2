@@ -1,0 +1,53 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: walletbot-config
+data:
+  # Execution
+  EXECUTION_MODE: "robust_paper"
+  # Logging
+  LOG_LEVEL: "INFO"
+  LOG_FORMAT: "json"
+  # Metrics
+  METRICS_ENABLED: "true"
+  METRICS_PORT: "9090"
+  METRICS_HOST: "0.0.0.0"
+  # Chain
+  CHAIN_ID: "8453"
+  # Paper trading
+  PAPER_TRADE: "true"
+  PAPER_INITIAL_BALANCE_USD: "1000.0"
+  # Portfolio weights
+  YIELD_WEIGHT: "0.40"
+  ALGO_WEIGHT: "0.35"
+  SHORT_WEIGHT: "0.10"
+  AIRDROP_WEIGHT: "0.15"
+  MONTHLY_INJECTION_USD: "150.0"
+  REBALANCE_DRIFT_THRESHOLD: "0.05"
+  # Telegram rate limiting
+  TELEGRAM_RATE_LIMIT: "1.0"
+  TELEGRAM_RATE_BURST: "1"
+  # Trade journal
+  TRADE_JOURNAL_PATH: "trade_journal.jsonl"
+  TRADE_JOURNAL_MAX_MB: "100.0"
+  # Advanced / resilience
+  RETRY_ATTEMPTS: "4"
+  RETRY_BASE_DELAY: "1.5"
+  CIRCUIT_FAILURE_THRESHOLD: "5"
+  CIRCUIT_RECOVERY_TIMEOUT: "30.0"
+  MAX_CONCURRENT_WALLETS: "5"
+  GAS_POLL_INTERVAL: "30.0"
+  LOOP_INTERVAL_SECONDS: "45.0"
+  ALGO_LOOP_INTERVAL_SECONDS: "300.0"
+  KELLY_FRACTION: "0.25"
+  ML_CONFIDENCE_THRESHOLD: "0.65"
+  # Alertmanager
+  ALERTMANAGER_WEBHOOK_ENABLED: "false"
+  ALERTMANAGER_WEBHOOK_PORT: "9093"
+  # Data sources
+  SUBGRAPH_URL: ""
+  DEFILLAMA_ENABLED: "false"
+  BINANCE_FALLBACK_ENABLED: "true"
+  # ML
+  CPCV_P_VALUE_THRESHOLD: "0.45"
+  KMP_DUPLICATE_LIB_OK: "TRUE"

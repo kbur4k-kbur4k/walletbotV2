@@ -1,0 +1,68 @@
+{
+  "version": "20260327_190121",
+  "trained_at": "2026-03-27T19:01:21.866259+00:00",
+  "archive_path": "",
+  "generated_at": "2026-03-27T19:01:21.866259+00:00",
+  "data_quality": {
+    "total_candles": 315345,
+    "date_range_days": 1095.0,
+    "missing_pct": 0.0,
+    "sources_used": [
+      "binance"
+    ],
+    "regime_distribution": {
+      "high_vol": 0.4513,
+      "sideways": 0.276,
+      "bull": 0.1552,
+      "bear": 0.1145,
+      "crisis": 0.003
+    }
+  },
+  "models": {
+    "xgboost": {
+      "oos_sharpe": 1.1497,
+      "win_rate": 0.2225,
+      "accepted": true,
+      "deflated_sharpe": 1.0,
+      "feature_stability": 0.0,
+      "rejection_reason": ""
+    },
+    "lightgbm": {
+      "oos_sharpe": 0.5526,
+      "win_rate": 0.2225,
+      "accepted": true,
+      "deflated_sharpe": 1.0,
+      "feature_stability": 0.0,
+      "rejection_reason": ""
+    },
+    "lstm": {
+      "oos_sharpe": 0.5708,
+      "win_rate": 0.2225,
+      "accepted": true,
+      "deflated_sharpe": 1.0,
+      "feature_stability": 0.0,
+      "rejection_reason": ""
+    },
+    "transformer": {
+      "oos_sharpe": 0.5194,
+      "win_rate": 0.2225,
+      "accepted": true,
+      "deflated_sharpe": 1.0,
+      "feature_stability": 0.0,
+      "rejection_reason": ""
+    },
+    "ppo": {
+      "oos_sharpe": 0.0186,
+      "win_rate": 0.52,
+      "accepted": true
+    }
+  },
+  "pruned_features": [],
+  "cpcv_n_combinations": 45,
+  "ensemble_active_weights": {
+    "xgboost": 0.4,
+    "lightgbm": 0.25,
+    "lstm": 0.25,
+    "transformer": 0.1
+  }
+}

@@ -1,0 +1,77 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: walletbot
+  labels:
+    app: walletbot
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: walletbot
+  template:
+    metadata:
+      labels:
+        app: walletbot
+    spec:
+      containers:
+        - name: walletbot
+          image: walletbot:latest
+          ports:
+            - containerPort: 9090
+              name: metrics
+          envFrom:
+            - configMapRef:
+                name: walletbot-config
+            - secretRef:
+                name: walletbot-secrets
+          volumeMounts:
+            - name: wallets-config
+              mountPath: /app/wallets.json
+              subPath: wallets.json
+              readOnly: true
+            - name: ml-models
+              mountPath: /app/wallet_manager/ml_models
+              readOnly: true
+            - name: paper-trades-db
+              mountPath: /app/paper_trades.db
+            - name: analytics-db
+              mountPath: /app/wallet_analytics.db
+          readinessProbe:
+            httpGet:
+              path: /ready
+              port: 9090
+            initialDelaySeconds: 30
+            periodSeconds: 10
+            failureThreshold: 3
+          livenessProbe:
+            httpGet:
+              path: /health
+              port: 9090
+            initialDelaySeconds: 60
+            periodSeconds: 30
+            failureThreshold: 5
+          resources:
+            requests:
+              cpu: "250m"
+              memory: "512Mi"
+            limits:
+              cpu: "1000m"
+              memory: "2Gi"
+      volumes:
+        - name: wallets-config
+          secret:
+            secretName: walletbot-wallets
+        - name: ml-models
+          hostPath:
+            path: /opt/walletbot/ml_models
+            type: Directory
+        - name: paper-trades-db
+          persistentVolumeClaim:
+            claimName: walletbot-paper-trades-pvc
+        - name: analytics-db
+          persistentVolumeClaim:
+            claimName: walletbot-analytics-pvc
+      securityContext:
+        runAsNonRoot: true
+        runAsUser: 10001

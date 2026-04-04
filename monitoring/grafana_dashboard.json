@@ -1,0 +1,123 @@
+{
+  "id": null,
+  "uid": "wallet-manager-main",
+  "title": "Wallet Manager DeFi Dashboard",
+  "tags": ["defi", "wallet-manager"],
+  "timezone": "browser",
+  "schemaVersion": 38,
+  "version": 1,
+  "refresh": "30s",
+  "panels": [
+    {
+      "id": 1,
+      "type": "stat",
+      "title": "Total Portfolio (USD)",
+      "gridPos": {"h": 4, "w": 6, "x": 0, "y": 0},
+      "targets": [{"expr": "wallet_portfolio_total_usd", "legendFormat": "Total"}],
+      "options": {"colorMode": "value", "graphMode": "area", "justifyMode": "auto"},
+      "fieldConfig": {"defaults": {"unit": "currencyUSD", "color": {"mode": "thresholds"}, "thresholds": {"steps": [{"color": "red", "value": 0}, {"color": "yellow", "value": 100}, {"color": "green", "value": 500}]}}}
+    },
+    {
+      "id": 2,
+      "type": "stat",
+      "title": "Cumulative P&L (USD)",
+      "gridPos": {"h": 4, "w": 6, "x": 6, "y": 0},
+      "targets": [{"expr": "wallet_pnl_usd", "legendFormat": "P&L"}],
+      "options": {"colorMode": "value", "graphMode": "area"},
+      "fieldConfig": {"defaults": {"unit": "currencyUSD"}}
+    },
+    {
+      "id": 3,
+      "type": "stat",
+      "title": "Sharpe Ratio",
+      "gridPos": {"h": 4, "w": 6, "x": 12, "y": 0},
+      "targets": [{"expr": "wallet_sharpe_ratio", "legendFormat": "Sharpe"}],
+      "options": {"colorMode": "value"},
+      "fieldConfig": {"defaults": {"decimals": 3, "thresholds": {"steps": [{"color": "red", "value": 0}, {"color": "yellow", "value": 0.5}, {"color": "green", "value": 1.0}]}}}
+    },
+    {
+      "id": 4,
+      "type": "stat",
+      "title": "Max Drawdown",
+      "gridPos": {"h": 4, "w": 6, "x": 18, "y": 0},
+      "targets": [{"expr": "wallet_max_drawdown", "legendFormat": "Drawdown"}],
+      "options": {"colorMode": "value"},
+      "fieldConfig": {"defaults": {"unit": "percentunit", "thresholds": {"steps": [{"color": "green", "value": 0}, {"color": "yellow", "value": 0.05}, {"color": "red", "value": 0.10}]}}}
+    },
+    {
+      "id": 5,
+      "type": "timeseries",
+      "title": "Portfolio Value Over Time",
+      "gridPos": {"h": 8, "w": 24, "x": 0, "y": 4},
+      "targets": [{"expr": "wallet_portfolio_total_usd", "legendFormat": "Total Portfolio"}],
+      "fieldConfig": {"defaults": {"unit": "currencyUSD"}}
+    },
+    {
+      "id": 6,
+      "type": "timeseries",
+      "title": "Pillar Values (USD)",
+      "gridPos": {"h": 8, "w": 12, "x": 0, "y": 12},
+      "targets": [{"expr": "wallet_pillar_value_usd{pillar=\"YIELD\"}", "legendFormat": "YIELD (40%)"}, {"expr": "wallet_pillar_value_usd{pillar=\"ALGO\"}", "legendFormat": "ALGO (35%)"}, {"expr": "wallet_pillar_value_usd{pillar=\"SHORT\"}", "legendFormat": "SHORT (10%)"}, {"expr": "wallet_pillar_value_usd{pillar=\"AIRDROP\"}", "legendFormat": "AIRDROP (15%)"}],
+      "fieldConfig": {"defaults": {"unit": "currencyUSD"}}
+    },
+    {
+      "id": 7,
+      "type": "gauge",
+      "title": "ML Model Confidence",
+      "gridPos": {"h": 8, "w": 6, "x": 12, "y": 12},
+      "targets": [{"expr": "wallet_ml_model_confidence", "legendFormat": "Confidence"}],
+      "fieldConfig": {"defaults": {"unit": "percentunit", "min": 0, "max": 1, "thresholds": {"steps": [{"color": "red", "value": 0}, {"color": "yellow", "value": 0.55}, {"color": "green", "value": 0.65}]}}}
+    },
+    {
+      "id": 8,
+      "type": "gauge",
+      "title": "Concept Drift Level",
+      "gridPos": {"h": 8, "w": 6, "x": 18, "y": 12},
+      "targets": [{"expr": "wallet_concept_drift_level", "legendFormat": "Drift"}],
+      "fieldConfig": {"defaults": {"min": 0, "max": 3, "thresholds": {"steps": [{"color": "green", "value": 0}, {"color": "yellow", "value": 1}, {"color": "orange", "value": 2}, {"color": "red", "value": 3}]}, "mappings": [{"type": "value", "options": {"0": {"text": "NOMINAL"}, "1": {"text": "MILD"}, "2": {"text": "MODERATE"}, "3": {"text": "SEVERE"}}}]}}
+    },
+    {
+      "id": 9,
+      "type": "stat",
+      "title": "Aave APY (%)",
+      "gridPos": {"h": 4, "w": 6, "x": 0, "y": 20},
+      "targets": [{"expr": "wallet_aave_apy_pct", "legendFormat": "APY"}],
+      "fieldConfig": {"defaults": {"unit": "percent", "thresholds": {"steps": [{"color": "red", "value": 0}, {"color": "yellow", "value": 1}, {"color": "green", "value": 3}]}}}
+    },
+    {
+      "id": 10,
+      "type": "stat",
+      "title": "Gas Price (Gwei)",
+      "gridPos": {"h": 4, "w": 6, "x": 6, "y": 20},
+      "targets": [{"expr": "wallet_gas_price_gwei", "legendFormat": "Gas"}],
+      "fieldConfig": {"defaults": {"thresholds": {"steps": [{"color": "green", "value": 0}, {"color": "yellow", "value": 20}, {"color": "red", "value": 50}]}}}
+    },
+    {
+      "id": 11,
+      "type": "timeseries",
+      "title": "RPC Latency (ms)",
+      "gridPos": {"h": 6, "w": 12, "x": 12, "y": 20},
+      "targets": [{"expr": "wallet_rpc_latency_ms", "legendFormat": "{{endpoint}}"}],
+      "fieldConfig": {"defaults": {"unit": "ms"}}
+    },
+    {
+      "id": 12,
+      "type": "timeseries",
+      "title": "Gas Price Over Time",
+      "gridPos": {"h": 6, "w": 12, "x": 0, "y": 26},
+      "targets": [{"expr": "wallet_gas_price_gwei", "legendFormat": "Gas (Gwei)"}]
+    },
+    {
+      "id": 13,
+      "type": "timeseries",
+      "title": "Aave APY Over Time",
+      "gridPos": {"h": 6, "w": 12, "x": 12, "y": 26},
+      "targets": [{"expr": "wallet_aave_apy_pct", "legendFormat": "Aave APY (%)"}],
+      "fieldConfig": {"defaults": {"unit": "percent"}}
+    }
+  ],
+  "templating": {"list": []},
+  "annotations": {"list": []},
+  "time": {"from": "now-24h", "to": "now"},
+  "timepicker": {}
+}

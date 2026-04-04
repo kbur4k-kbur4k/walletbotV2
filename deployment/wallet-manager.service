@@ -1,0 +1,25 @@
+[Unit]
+Description=Wallet Manager DeFi Orchestrator
+After=network-online.target
+Wants=network-online.target
+
+[Service]
+Type=simple
+User=wallet
+WorkingDirectory=/opt/wallet_manager
+EnvironmentFile=/opt/wallet_manager/.env
+ExecStart=/opt/wallet_manager/venv/bin/python -m wallet_manager.orchestrator
+Restart=on-failure
+RestartSec=30
+StandardOutput=journal
+StandardError=journal
+SyslogIdentifier=wallet_manager
+
+# Security hardening
+NoNewPrivileges=yes
+PrivateTmp=yes
+ProtectSystem=strict
+ReadWritePaths=/opt/wallet_manager/logs /opt/wallet_manager/wallet_analytics.db
+
+[Install]
+WantedBy=multi-user.target

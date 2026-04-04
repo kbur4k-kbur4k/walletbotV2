@@ -1,0 +1,126 @@
+[build-system]
+requires = ["setuptools>=68", "wheel"]
+build-backend = "setuptools.build_meta"
+
+[tool.setuptools.packages.find]
+where = ["."]
+include = ["wallet_manager*"]
+
+[project]
+name = "wallet-manager"
+version = "2.0.0"
+description = "Automated DeFi portfolio management on Base"
+requires-python = ">=3.11"
+readme = "wallet_manager/README.md"
+
+[project.optional-dependencies]
+dev = [
+    "pytest>=8.0",
+    "pytest-asyncio>=0.23",
+    "pytest-cov>=5.0",
+    "pytest-mock>=3.12",
+    "pytest-xdist>=3.5",
+    "aioresponses>=0.7.6",
+    "mypy>=1.9",
+    "ruff>=0.4",
+    "bandit[toml]>=1.7",
+    "pip-audit>=2.7",
+    "pre-commit>=3.7",
+]
+
+[tool.ruff]
+line-length = 100
+target-version = "py311"
+
+[tool.ruff.lint]
+select = ["E", "F", "W", "I", "N", "UP", "B", "A", "C4", "SIM", "RUF", "ASYNC"]
+ignore = ["E501", "SIM108", "B007", "UP007", "B904", "A002", "A003", "N803", "N806", "N812", "RUF012", "RUF002", "RUF003", "ASYNC110", "ASYNC230", "ASYNC240"]
+
+[tool.ruff.lint.per-file-ignores]
+"tests/*" = ["F401", "F811", "S101", "E402", "SIM105", "SIM117", "RUF001"]
+"scripts/*" = ["T201", "S101", "E402", "F401", "I001", "UP045", "SIM105", "RUF010", "C408", "B905", "F841", "UP017", "RUF005"]
+"wallet_manager/task_factories.py" = ["I001", "SIM117", "RUF059", "F841", "F401", "C408"]
+"wallet_manager/task_factories_airdrop.py" = ["RUF100"]
+"wallet_manager/task_factories_algo.py" = ["RUF100"]
+"wallet_manager/task_factories_short.py" = ["RUF100"]
+"wallet_manager/task_factories_yield.py" = ["RUF100"]
+"wallet_manager/actions.py" = ["F401", "I001", "W293", "SIM117"]
+"wallet_manager/alerting/prometheus_webhook.py" = ["F401", "RUF001"]
+"wallet_manager/network/gas_monitor.py" = ["SIM117"]
+"wallet_manager/network/router.py" = ["RUF006"]
+"wallet_manager/network/session_factory.py" = ["F401"]
+"wallet_manager/network/tx_repair.py" = ["F401", "I001"]
+"wallet_manager/orchestrator.py" = ["F401", "UP037", "E402", "RUF001", "RUF006", "SIM105", "SIM102", "F811"]
+"wallet_manager/orchestrator_lifecycle.py" = ["F401", "N814"]
+"wallet_manager/orchestrator_status.py" = ["RUF001"]
+"wallet_manager/security/telegram_commands.py" = ["F401", "RUF001", "RUF006", "SIM105", "RUF059"]
+"wallet_manager/security/telegram_manager.py" = ["F401"]
+"wallet_manager/strategies/__init__.py" = ["F401", "E402", "RUF100"]
+"wallet_manager/strategies/alpha_engine.py" = ["RUF001", "RUF059"]
+"wallet_manager/strategies/deep_kelly_risk.py" = ["RUF001"]
+"wallet_manager/strategies/ensemble_weighter.py" = ["N814", "UP045", "RUF100"]
+"wallet_manager/strategies/latency_shield.py" = ["SIM117"]
+"wallet_manager/strategies/liquidity_alpha.py" = ["RUF059"]
+"wallet_manager/strategies/market_microstructure.py" = ["RUF046"]
+"wallet_manager/strategies/oci_deployer.py" = ["RUF005"]
+"wallet_manager/strategies/airdrop_strategy.py" = ["RUF059"]
+"wallet_manager/strategies/algo_strategy.py" = ["RUF059"]
+"wallet_manager/strategies/paper_engine.py" = ["I001", "F401"]
+"wallet_manager/strategies/quant_analytics.py" = ["RUF100"]
+"wallet_manager/strategies/regime_filter.py" = ["RUF001"]
+"wallet_manager/strategies/robust_alpha.py" = ["I001", "RUF059"]
+"wallet_manager/strategies/signal_intelligence.py" = ["I001", "F401"]
+"wallet_manager/strategies/stacking_meta_learner.py" = ["F401", "UP035", "W293", "N814"]
+"wallet_manager/strategies/wf_validator.py" = ["RUF100"]
+"wallet_manager/strategies/yield_strategy.py" = ["E402"]
+"wallet_manager/utils/log_schema.py" = ["I001"]
+
+[tool.mypy]
+python_version = "3.11"
+strict = false
+ignore_missing_imports = true
+warn_return_any = true
+warn_unused_ignores = true
+disallow_untyped_defs = true
+exclude = [
+    "tests/",
+    "scripts/",
+]
+
+[[tool.mypy.overrides]]
+module = "wallet_manager.strategies.oci_deployer"
+warn_unused_ignores = false
+
+[tool.pytest.ini_options]
+asyncio_mode = "auto"
+testpaths = ["tests"]
+addopts = "-v --tb=short"
+python_files = ["test_*.py"]
+python_classes = ["Test*"]
+python_functions = ["test_*"]
+asyncio_default_fixture_loop_scope = "function"
+filterwarnings = [
+    "ignore::DeprecationWarning",
+    "ignore::PendingDeprecationWarning",
+]
+
+[tool.coverage.run]
+source = ["wallet_manager"]
+omit = [
+    "tests/*",
+    "scripts/*",
+    "wallet_manager/__pycache__/*",
+    "wallet_manager/ml_models/*",
+    "wallet_manager/strategies/oci_deployer.py",
+    "wallet_manager/allcode.txt",
+]
+
+[tool.coverage.report]
+fail_under = 85
+show_missing = true
+exclude_lines = [
+    "pragma: no cover",
+    "if TYPE_CHECKING:",
+    "raise NotImplementedError",
+    "\\.\\.\\.",
+]
