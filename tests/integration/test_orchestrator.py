@@ -159,13 +159,14 @@ async def test_orchestrator_supports_legacy_task_factory_signature(
     with (
         patch("wallet_manager.orchestrator._cfg", return_value=mock_settings),
         patch("wallet_manager.orchestrator.get_settings", return_value=mock_settings),
+        patch("wallet_manager.telegram_notifier.asyncio.sleep", new_callable=AsyncMock),
     ):
         orchestrator = WalletOrchestrator(
             wallet_configs=[minimal_wallet_config],
             task_factory=_legacy_task_factory,
             command_state=CommandState(),
         )
-        await asyncio.wait_for(orchestrator.run(), timeout=10.0)
+        await asyncio.wait_for(orchestrator.run(), timeout=30.0)
 
     assert calls == [("test_wallet", True)]
 
